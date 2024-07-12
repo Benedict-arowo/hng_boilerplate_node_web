@@ -1,0 +1,400 @@
+openapi: 3.0.3
+info: 
+  title: "Team Nature's Swagger API - OpenAPI 3.0"
+  description: |-
+    This is a boilerplate for an Organisation API based on the OpenAPI 3.0 specification.  You can find out more about
+    the project at our [github page](https://github.com/Benedict-arowo/hng_boilerplate_node_web/tree/team-nature?tab=readme-ov-file). 
+  license:
+    name: MIT
+    url: https://opensource.org/license/mit
+  version: 1.0.11
+servers:
+  - url: https://example.com/api
+paths: {
+  
+}
+
+
+components:
+  schemas:
+    User:
+      type: object
+      required:
+        - name
+        - email
+        - password
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+          format: email
+        organisation:
+          $ref: '#/components/schemas/userOrganisations'
+        password:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Authentication:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        provider:
+          type: string
+        providerId:
+          type: string
+          format: uuid
+        token:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    BlogPosts:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        authorId:
+          type: string
+          format: uuid
+        author:
+          $ref: "#/components/schemas/User"
+        title:
+          type: string
+        content:
+          type: string
+        tags:
+          type: string
+
+    contactMessages:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        email:
+          type: string
+        message:
+          type: string
+
+    Logs:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user:
+          type: object
+          properties:
+            id:
+              $ref: "#/components/schemas/User/properties/id"
+            name:
+              $ref: "#/components/schemas/User/properties/name"
+            email:
+              $ref: "#/components/schemas/User/properties/email"
+        action:
+          type: string
+        timestamp:
+          type: string
+          format: date-time
+
+    Notifications:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user:
+          type: object
+          properties:
+            id:
+              $ref: "#/components/schemas/User/properties/id"
+            name:
+              $ref: "#/components/schemas/User/properties/name"
+            email:
+              $ref: "#/components/schemas/User/properties/email"
+        message:
+          type: string
+        read:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Organisations:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        owner:
+          type: object
+          properties:
+            id:
+              $ref: "#/components/schemas/User/properties/id"
+            name:
+              $ref: "#/components/schemas/User/properties/name"
+            email:
+              $ref: "#/components/schemas/User/properties/email"
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Payments:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user:
+          type: object
+          properties:
+            id:
+              $ref: "#/components/schemas/User/properties/id"
+            name:
+              $ref: "#/components/schemas/User/properties/name"
+            email:
+              $ref: "#/components/schemas/User/properties/email"
+        orgId:
+          type: string
+          format: uuid
+          nullable: true
+        amount:
+          type: number
+          format: float
+        currency:
+          type: string
+        provider:
+          type: string
+        providerId:
+          type: string
+          format: uuid
+        invoice:
+          type: string
+        status:
+          type: string
+          enum: [pending, completed, failed]
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Settings:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        user:
+          type: object
+          properties:
+            id:
+              $ref: "#/components/schemas/User/properties/id"
+            name:
+              $ref: "#/components/schemas/User/properties/name"
+            email:
+              $ref: "#/components/schemas/User/properties/email"
+        key:
+          type: string
+        value:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+
+    Waitlists:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        email:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    userOrganisations:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        orgId:
+          type: string
+          format: uuid
+        role:
+          type: string
+          enum: [admin, member]
+          
+    EmailLog:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+        templateId:
+          type: string
+        status:
+          type: string
+          enum: [sent, failed, pending]
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - userId
+        - templateId
+        - status
+
+    EmailTemplate:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        subject:
+          type: string
+        body:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - name
+        - subject
+        - body
+
+    Integration:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        service:
+          type: string
+        apiKey:
+          type: string
+        userId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - service
+        - apiKey
+        - userId
+
+    AI:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+        inputData:
+          type: string
+        responseData:
+          type: string
+        service:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - userId
+        - inputData
+        - responseData
+
+    Invitation:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+        email:
+          type: string
+        accepted:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+      required:
+        - userId
+        - email
+
+    validationError:
+      type: object
+      properties:
+        status:
+          type: integer
+        errors:
+          type: array
+          items:
+            type: object
+            properties:
+              field:
+                type: string
+              message:
+                type: string
+                
+    Error:
+      type: object
+      properties:
+        status:
+          type: integer
+        message: 
+          type: string
+          
+    
