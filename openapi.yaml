@@ -1,19 +1,70 @@
 openapi: 3.0.3
-info: 
+info:
   title: "Team Nature's Swagger API - OpenAPI 3.0"
   description: |-
     This is a boilerplate for an Organisation API based on the OpenAPI 3.0 specification.  You can find out more about
-    the project at our [github page](https://github.com/Benedict-arowo/hng_boilerplate_node_web/tree/team-nature?tab=readme-ov-file). 
+    the project at our [github page](https://github.com/Benedict-arowo/hng_boilerplate_node_web/tree/team-nature?tab=readme-ov-file).
   license:
     name: MIT
     url: https://opensource.org/license/mit
   version: 1.0.11
 servers:
   - url: https://example.com/api
-paths: {
-  
-}
-
+paths:
+  "/waitlist":
+    post:
+      tags:
+        - Waitlist
+      summary: "Create a new waitlist entry"
+      requestBody:
+        description: "Adds an email to the waitlist"
+        content:
+          application/json:
+            schema:
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "winalong@teamnatureswag.com"
+        required: true
+      responses:
+        "201":
+          description: "Waitlist entry added successfully"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: "Waitlist entry added successfully"
+                  data:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                      email:
+                        type: string
+                        format: email
+                      created_at:
+                        type: string
+                        format: date-time
+        "400":
+          description: "Invalid request data"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        "409":
+          description: "Email already exists in the waitlist"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: "Email already exists in the waitlist"
 
 components:
   schemas:
@@ -33,7 +84,7 @@ components:
           type: string
           format: email
         organisation:
-          $ref: '#/components/schemas/userOrganisations'
+          $ref: "#/components/schemas/userOrganisations"
         password:
           type: string
         createdAt:
@@ -262,7 +313,7 @@ components:
         role:
           type: string
           enum: [admin, member]
-          
+
     EmailLog:
       type: object
       properties:
@@ -388,13 +439,11 @@ components:
                 type: string
               message:
                 type: string
-                
+
     Error:
       type: object
       properties:
         status:
           type: integer
-        message: 
+        message:
           type: string
-          
-    
