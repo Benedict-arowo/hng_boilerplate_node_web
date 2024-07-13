@@ -14,8 +14,14 @@ info:
 servers:
     - url: https://example.com/api/v1
 tags:
+    - name: Authentication
+      description: Routes related to Authentication
     - name: Users
       description: Routes related to Users
+    - name: Organisation
+      description: Routes related to Organisation
+    - name: Payments
+      description: Routes related to Payments
 paths:
     /auth/login:
         post:
