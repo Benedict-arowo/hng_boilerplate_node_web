@@ -13,9 +13,6 @@ info:
     version: 1.0.11
 servers:
     - url: https://example.com/api/v1
-      description: Production server
-    - url: https://staging.example.com/api/v1
-      description: Staging server
 tags:
     - name: Authentication
       description: Routes related to Authentication
@@ -52,19 +49,11 @@ paths:
                         application/json:
                             schema:
                                 properties:
-                                    status:
-                                        type: boolean
-                                        example: true
-                                    message:
+                                    user:
+                                        $ref: "#/components/schemas/UserResponse"
+                                    accessToken:
                                         type: string
-                                        example: "Successfully logged in"
-                                    data:
-                                        properties:
-                                            user:
-                                                $ref: "#/components/schemas/UserResponse"
-                                            accessToken:
-                                                type: string
-                                                example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
                 "400":
                     description: Login Unsuccessful
                     content:
@@ -105,15 +94,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                properties:
-                                    status:
-                                        type: boolean
-                                        example: true
-                                    message:
-                                        type: string
-                                        example: "Successfull registeration"
-                                    data:
-                                        $ref: "#/components/schemas/UserResponse"
+                                $ref: "#/components/schemas/UserResponse"
                 "400":
                     description: Invalid input
                     content:
@@ -143,20 +124,18 @@ paths:
                                 email:
                                     type: string
                                     format: email
-                                    example: "user@example.com"
+                                    example: user@example.com
             responses:
                 "200":
                     description: Password reset link sent
                     content:
                         application/json:
                             schema:
+                                type: object
                                 properties:
-                                    status:
-                                        type: boolean
-                                        example: true
                                     message:
                                         type: string
-                                        example: "Password reset link has been sent to your email"
+                                        example: Password reset link has been sent to your email.
                 "400":
                     description: Invalid input
                     content:
@@ -180,11 +159,11 @@ paths:
                             properties:
                                 token:
                                     type: string
-                                    example: "reset_token"
+                                    example: reset_token
                                 newPassword:
                                     type: string
                                     minLength: 6
-                                    example: "newPassword123"
+                                    example: newPassword123
             responses:
                 "200":
                     description: Password reset successful
@@ -193,12 +172,9 @@ paths:
                             schema:
                                 type: object
                                 properties:
-                                    status:
-                                        type: boolean
-                                        example: true
                                     message:
                                         type: string
-                                        example: "Password has been reset successfully."
+                                        example: Password has been reset successfully.
                 "400":
                     description: Invalid input
                     content:
@@ -230,11 +206,11 @@ paths:
                             properties:
                                 currentPassword:
                                     type: string
-                                    example: "currentPassword123"
+                                    example: currentPassword123
                                 newPassword:
                                     type: string
                                     minLength: 6
-                                    example: "newPassword123"
+                                    example: newPassword123
             responses:
                 "200":
                     description: Password change successful
@@ -243,24 +219,29 @@ paths:
                             schema:
                                 type: object
                                 properties:
-                                    status:
-                                        type: boolean
-                                        example: true
                                     message:
                                         type: string
-                                        example: "Password has been changed successfully."
+                                        example: Password has been changed successfully.
                 "400":
                     description: Invalid input
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                                allOf:
+                                    - $ref: "#/components/schemas/Error"
+                                    - properties:
+                                          status:
+                                              example: 400
                 "401":
                     description: Unauthorized
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                                allOf:
+                                    - $ref: "#/components/schemas/Error"
+                                    - properties:
+                                          status:
+                                              example: 401
                 "422":
                     description: Validation Error
                     content:
@@ -306,19 +287,11 @@ paths:
                     content:
                         application/json:
                             schema:
+                                type: object
                                 properties:
-                                    status:
-                                        type: boolean
-                                        example: true
-                                    message:
+                                    accessToken:
                                         type: string
-                                        example: "Success"
-                                    data:
-                                        type: object
-                                        properties:
-                                            accessToken:
-                                                type: string
-                                                example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
                 "400":
                     description: Invalid input
                     content:
@@ -342,7 +315,7 @@ paths:
                                 email:
                                     type: string
                                     format: email
-                                    example: "johndoe@example.com"
+                                    example: johndoe@example.com
             responses:
                 "200":
                     description: Magic link sent successfully
@@ -351,12 +324,9 @@ paths:
                             schema:
                                 type: object
                                 properties:
-                                    success:
-                                        type: boolean
-                                        example: true
                                     message:
                                         type: string
-                                        example: "Magic link sent to your email"
+                                        example: Magic link sent to your email
                 "400":
                     description: Invalid input
                     content:
@@ -381,31 +351,23 @@ paths:
                                 email:
                                     type: string
                                     format: email
-                                    example: "johndoe@example.com"
+                                    example: johndoe@example.com
                                 magicLinkToken:
                                     type: string
-                                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
             responses:
                 "200":
                     description: Successfully logged in via magic link
                     content:
                         application/json:
                             schema:
+                                type: object
                                 properties:
-                                    status:
-                                        type: boolean
-                                        example: true
-                                    message:
+                                    user:
+                                        $ref: "#/components/schemas/User"
+                                    accessToken:
                                         type: string
-                                        example: "Successfully logged in"
-                                    data:
-                                        type: object
-                                        properties:
-                                            user:
-                                                $ref: "#/components/schemas/User"
-                                            accessToken:
-                                                type: string
-                                                example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                        example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
                 "400":
                     description: Invalid input
                     content:
@@ -721,26 +683,18 @@ paths:
                     content:
                         application/json:
                             schema:
+                                type: object
                                 properties:
-                                    status:
-                                        type: boolean
-                                        example: true
-                                    message:
-                                        type: string
-                                        example: "Successfully retrieved organisations"
-                                    data:
-                                        type: object
-                                        properties:
-                                            organisations:
-                                                type: array
-                                                items:
-                                                    $ref: "#/components/schemas/Organisations"
-                                            totalCount:
-                                                type: integer
-                                                example: 20
-                                            totalPages:
-                                                type: integer
-                                                example: 2
+                                    organisations:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Organisations"
+                                    totalCount:
+                                        type: integer
+                                        example: 20
+                                    totalPages:
+                                        type: integer
+                                        example: 2
                 "401":
                     description: Unauthorized
                     content:
@@ -764,22 +718,14 @@ paths:
                             properties:
                                 name:
                                     type: string
-                                    example: "New Organisation"
+                                    example: New Organisation
             responses:
                 "201":
                     description: Organisation created
                     content:
                         application/json:
                             schema:
-                                properties:
-                                    status:
-                                        type: boolean
-                                        example: true
-                                    message:
-                                        type: string
-                                        example: "Successfully created organisation"
-                                    data:
-                                        $ref: "#/components/schemas/Organisations"
+                                $ref: "#/components/schemas/Organisations"
                 "400":
                     description: Invalid input
                     content:
@@ -811,15 +757,7 @@ paths:
                     content:
                         application/json:
                             schema:
-                                properties:
-                                    status:
-                                        type: boolean
-                                        example: true
-                                    message:
-                                        type: string
-                                        example: "Successfully retreived the organisation."
-                                    data:
-                                        $ref: "#/components/schemas/Organisations"
+                                $ref: "#/components/schemas/Organisations"
                 "400":
                     description: Invalid input
                     content:
@@ -861,22 +799,14 @@ paths:
                             properties:
                                 name:
                                     type: string
-                                    example: "Updated Organisation"
+                                    example: Updated Organisation
             responses:
                 "200":
                     description: Organisation updated
                     content:
                         application/json:
                             schema:
-                                properties:
-                                    status:
-                                        type: boolean
-                                        example: true
-                                    message:
-                                        type: string
-                                        example: "Successfully updated the organisation"
-                                    data:
-                                        $ref: "#/components/schemas/Organisations"
+                                $ref: "#/components/schemas/Organisations"
                 "400":
                     description: Invalid input
                     content:
@@ -930,7 +860,6 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
-
     /payments:
         get:
             tags:
@@ -959,23 +888,15 @@ paths:
                     content:
                         application/json:
                             schema:
+                                type: object
                                 properties:
-                                    status:
-                                        type: boolean
-                                        example: true
-                                    message:
-                                        type: string
-                                        example: "Successfully retrieved the payment"
-                                    data:
-                                        type: object
-                                        properties:
-                                            total:
-                                                type: integer
-                                                example: 50
-                                            payments:
-                                                type: array
-                                                items:
-                                                    $ref: "#/components/schemas/Payments"
+                                    total:
+                                        type: integer
+                                        example: 50
+                                    payments:
+                                        type: array
+                                        items:
+                                            $ref: "#/components/schemas/Payments"
                 "401":
                     description: Unauthorized
                     content:
@@ -987,7 +908,11 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                                allOf:
+                                    - $ref: "#/components/schemas/Error"
+                                    - properties:
+                                          status:
+                                              example: 403
     /payments/{id}:
         get:
             tags:
@@ -1002,44 +927,48 @@ paths:
                   schema:
                       type: string
                       format: uuid
-                      example: "123e4567-e89b-12d3-a456-426614174000"
+                      example: 123e4567-e89b-12d3-a456-426614174000
             responses:
                 "200":
                     description: Successfully retrieved the payment
                     content:
                         application/json:
                             schema:
-                                properties:
-                                    status:
-                                        type: boolean
-                                        example: true
-                                    message:
-                                        type: string
-                                        example: "Successfully retrieved the payment"
-                                    data:
-                                        allOf:
-                                            - $ref: "#/components/schemas/Payments"
-                                            - properties:
-                                                  amount:
-                                                      example: 100
+                                allOf:
+                                    - $ref: "#/components/schemas/Payments"
+                                    - properties:
+                                          amount:
+                                              example: 100
                 "401":
                     description: Unauthorized
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                                allOf:
+                                    - $ref: "#/components/schemas/Error"
+                                    - properties:
+                                          status:
+                                              example: 401
                 "403":
                     description: Forbidden - Access denied
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                                allOf:
+                                    - $ref: "#/components/schemas/Error"
+                                    - properties:
+                                          status:
+                                              example: 403
                 "404":
                     description: Payment not found
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                                allOf:
+                                    - $ref: "#/components/schemas/Error"
+                                    - properties:
+                                          status:
+                                              example: 404
     /payments/stripe:
         post:
             tags:
@@ -1061,35 +990,27 @@ paths:
                                 amount:
                                     type: number
                                     format: float
-                                    example: 100.0
+                                    example: 100
                                 currency:
                                     type: string
-                                    example: "USD"
+                                    example: USD
                                 description:
                                     type: string
-                                    example: "Payment for Service"
+                                    example: Payment for Service
                                 orgId:
                                     type: string
-                                    example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                    example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
             responses:
                 "200":
                     description: Payment processed successfully
                     content:
                         application/json:
                             schema:
-                                properties:
-                                    status:
-                                        type: boolean
-                                        example: true
-                                    message:
-                                        type: string
-                                        example: "Payment processed successfully"
-                                    data:
-                                        allOf:
-                                            - $ref: "#/components/schemas/Payments"
-                                            - properties:
-                                                  amount:
-                                                      example: 100
+                                allOf:
+                                    - $ref: "#/components/schemas/Payments"
+                                    - properties:
+                                          amount:
+                                              example: 100
                 "400":
                     description: Invalid input
                     content:
@@ -1117,35 +1038,27 @@ paths:
                                 amount:
                                     type: number
                                     format: float
-                                    example: 100.0
+                                    example: 100
                                 currency:
                                     type: string
-                                    example: "USD"
+                                    example: USD
                                 description:
                                     type: string
-                                    example: "Payment for Service"
+                                    example: Payment for Service
                                 orgId:
                                     type: string
-                                    example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                    example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
             responses:
                 "200":
                     description: Payment processed successfully
                     content:
                         application/json:
                             schema:
-                                properties:
-                                    status:
-                                        type: boolean
-                                        example: true
-                                    message:
-                                        type: string
-                                        example: "Payment processed successfully"
-                                    data:
-                                        allOf:
-                                            - $ref: "#/components/schemas/Payments"
-                                            - properties:
-                                                  amount:
-                                                      example: 100
+                                allOf:
+                                    - $ref: "#/components/schemas/Payments"
+                                    - properties:
+                                          amount:
+                                              example: 100
                 "400":
                     description: Invalid input
                     content:
@@ -1173,115 +1086,57 @@ paths:
                                 amount:
                                     type: number
                                     format: float
-                                    example: 100.0
+                                    example: 100
                                 currency:
                                     type: string
-                                    example: "USD"
+                                    example: USD
                                 description:
                                     type: string
-                                    example: "Payment for Service"
+                                    example: Payment for Service
                                 orgId:
                                     type: string
-                                    example: "3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                                    example: 3fa85f64-5717-4562-b3fc-2c963f66afa6
             responses:
                 "200":
                     description: Payment processed successfully
                     content:
                         application/json:
                             schema:
-                                properties:
-                                    status:
-                                        type: boolean
-                                        example: true
-                                    message:
-                                        type: string
-                                        example: "Payment processed successfully"
-                                    data:
-                                        allOf:
-                                            - $ref: "#/components/schemas/Payments"
-                                            - properties:
-                                                  amount:
-                                                      example: 100
+                                allOf:
+                                    - $ref: "#/components/schemas/Payments"
+                                    - properties:
+                                          amount:
+                                              example: 100
                 "400":
                     description: Invalid input
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
-    /waitlist:
-        post:
-            tags:
-                - Waitlist
-            summary: "Create a new waitlist entry"
-            requestBody:
-                description: "Adds an email to the waitlist"
-                content:
-                    application/json:
-                        schema:
-                            required:
-                                - email
-                            properties:
-                                email:
-                                    type: string
-                                    format: email
-                                    example: "winalong@teamnatureswag.com"
-                required: true
-            responses:
-                "201":
-                    description: "Waitlist entry added successfully"
-                    content:
-                        application/json:
-                            schema:
-                                properties:
-                                    success:
-                                        type: boolean
-                                        example: true
-                                    message:
-                                        type: string
-                                        example: "Waitlist entry added successfully"
-                                    data:
-                                        type: object
-                                        properties:
-                                            id:
-                                                type: integer
-                                            email:
-                                                type: string
-                                                format: email
-                                            created_at:
-                                                type: string
-                                                format: date-time
-                "400":
-                    description: "Invalid request data"
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/Error"
-                "409":
-                    description: "Email already exists in the waitlist"
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/Error"
+    /blogs:
         get:
             tags:
-                - Waitlist
-            summary: "Retrieve waitlist entries paginated"
+                - Blog Posts
+
+            summary: Get all blog posts
             parameters:
-                - in: query
-                  name: page
+                - name: page
+                  in: query
+                  description: Page number
+                  required: false
                   schema:
                       type: integer
-                      example: 1
-                  description: "Page number"
-                - in: query
-                  name: limit
+                      default: 1
+                - name: limit
+                  in: query
+                  description: Number of items per page
+                  required: false
                   schema:
                       type: integer
-                      example: 10
-                  description: "Number of entries per page"
+                      default: 10
             responses:
                 "200":
-                    description: "Waitlist entries retrieved successfully"
+                    description: A list of blog posts
                     content:
                         application/json:
                             schema:
@@ -1291,56 +1146,227 @@ paths:
                                         example: true
                                     message:
                                         type: string
-                                        example: "Waitlist entries retrieved successfully"
+                                        example: "Successfully retrevied blogs"
                                     data:
-                                        type: array
-                                        items:
-                                            type: object
-                                            properties:
-                                                id:
-                                                    type: integer
-                                                email:
-                                                    type: string
-                                                    format: email
-                                                created_at:
-                                                    type: string
-                                                    format: date-time
-                                                pagination:
-                                                    type: object
-                                                    properties:
-                                                        current_page:
-                                                            type: integer
-                                                        total_pages:
-                                                            type: integer
-                                                        total_entries:
-                                                            type: integer
-                "500":
-                    description: "Internal server error"
+                                        type: object
+                                        properties:
+                                            pagination:
+                                                type: object
+                                                properties:
+                                                    totalItems:
+                                                        type: integer
+                                                    totalPages:
+                                                        type: integer
+                                                    currentPage:
+                                                        type: integer
+                                            blogs:
+                                                type: array
+                                                items:
+                                                    $ref: "#/components/schemas/BlogPosts"
+        post:
+            tags:
+                - Blog Posts
+            summary: Create a new blog post
+            security:
+                - BearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/BlogPosts"
+            responses:
+                "201":
+                    description: Blog post created successfully
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    status:
+                                        type: boolean
+                                        example: true
+                                    message:
+                                        type: string
+                                        example: "Successfully created blog"
+                                    data:
+                                        $ref: "#/components/schemas/BlogPosts"
+                "400":
+                    description: Invalid input
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
-    /waitlist/{id}:
-        delete:
+    /blogs/{id}:
+        get:
+            summary: Get a single blog post by ID
             tags:
-                - Waitlist
-            summary: "Delete a waitlist entry"
+                - Blog Posts
             parameters:
-                - in: path
-                  name: id
+                - name: id
+                  in: path
                   required: true
                   schema:
-                      type: integer
-                  description: "ID of the waitlist entry"
+                      type: string
             responses:
-                "204":
-                    description: "Waitlist entry deleted successfully"
+                "200":
+                    description: A single blog post
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    status:
+                                        type: boolean
+                                        example: true
+                                    message:
+                                        type: string
+                                        example: "Success"
+                                    data:
+                                        $ref: "#/components/schemas/BlogPosts"
                 "404":
-                    description: "Waitlist entry not found"
+                    description: Post not found
                     content:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+
+        patch:
+            tags:
+                - Blog Posts
+            summary: Update a blog post by ID
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: "#/components/schemas/BlogPosts"
+            responses:
+                "200":
+                    description: Blog post updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                properties:
+                                    status:
+                                        type: boolean
+                                        example: true
+                                    message:
+                                        type: string
+                                        example: "Success"
+                                    data:
+                                        $ref: "#/components/schemas/BlogPosts"
+                "400":
+                    description: Invalid input
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                "404":
+                    description: Post not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+        delete:
+            tags:
+                - Blog Posts
+            summary: Delete a blog post by ID
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: id
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                "204":
+                    description: Blog post deleted successfully
+                "404":
+                    description: Post not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+
+    /notifications/{userId}:
+        get:
+            tags:
+                - Notifications
+            summary: Get all notifications
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: limit
+                  in: query
+                  description: Number of payments to return per page
+                  required: false
+                  schema:
+                      type: integer
+                      default: 10
+                - name: offset
+                  in: query
+                  description: Index of the first payment to return (0-indexed)
+                  required: false
+                  schema:
+                      type: integer
+                      default: 0
+                - name: userId
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+                      example: "123e4567-e89b-12d3-a456-426614174000"
+
+            description: Get all notifications for a user
+            operationId: getNotifications
+            responses:
+                "200":
+                    description: A list of notifications
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    properties:
+                                        status:
+                                            type: string
+                                            example: "success"
+                                        message:
+                                            type: string
+                                            example: "Notifications retrieved successfully"
+                                        data:
+                                            type: array
+                                            items:
+                                            $ref: "#/components/schemas/Notifications"
+
+                "401":
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                "404":
+                    description: No notifications found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+
 components:
     securitySchemes:
         BearerAuth:
@@ -1373,7 +1399,6 @@ components:
                 updatedAt:
                     type: string
                     format: date-time
-
         UserResponse:
             type: object
             required:
@@ -1384,15 +1409,14 @@ components:
                 id:
                     type: string
                     format: uuid
-                    example: "123e4567-e89b-12d3-a456-426614174000"
+                    example: 123e4567-e89b-12d3-a456-426614174000
                 name:
                     type: string
-                    example: "John Doe"
+                    example: John Doe
                 email:
                     type: string
                     format: email
-                    example: "johndoe@example.com"
-
+                    example: johndoe@example.com
         Authentication:
             type: object
             properties:
@@ -1415,7 +1439,6 @@ components:
                 updatedAt:
                     type: string
                     format: date-time
-
         BlogPosts:
             type: object
             properties:
@@ -1433,7 +1456,6 @@ components:
                     type: string
                 tags:
                     type: string
-
         contactMessages:
             type: object
             properties:
@@ -1446,7 +1468,6 @@ components:
                     type: string
                 message:
                     type: string
-
         Logs:
             type: object
             properties:
@@ -1467,7 +1488,6 @@ components:
                 timestamp:
                     type: string
                     format: date-time
-
         Notifications:
             type: object
             properties:
@@ -1493,7 +1513,6 @@ components:
                 updatedAt:
                     type: string
                     format: date-time
-
         Organisations:
             type: object
             properties:
@@ -1517,7 +1536,6 @@ components:
                 updatedAt:
                     type: string
                     format: date-time
-
         Payments:
             type: object
             properties:
@@ -1551,14 +1569,16 @@ components:
                     type: string
                 status:
                     type: string
-                    enum: [pending, completed, failed]
+                    enum:
+                        - pending
+                        - completed
+                        - failed
                 createdAt:
                     type: string
                     format: date-time
                 updatedAt:
                     type: string
                     format: date-time
-
         Settings:
             type: object
             properties:
@@ -1584,7 +1604,6 @@ components:
                 updatedAt:
                     type: string
                     format: date-time
-
         Waitlists:
             type: object
             properties:
@@ -1596,7 +1615,6 @@ components:
                 createdAt:
                     type: string
                     format: date-time
-
         userOrganisations:
             type: object
             properties:
@@ -1611,8 +1629,9 @@ components:
                     format: uuid
                 role:
                     type: string
-                    enum: [admin, member]
-
+                    enum:
+                        - admin
+                        - member
         EmailLog:
             type: object
             properties:
@@ -1625,7 +1644,10 @@ components:
                     type: string
                 status:
                     type: string
-                    enum: [sent, failed, pending]
+                    enum:
+                        - sent
+                        - failed
+                        - pending
                 createdAt:
                     type: string
                     format: date-time
@@ -1633,7 +1655,6 @@ components:
                 - userId
                 - templateId
                 - status
-
         EmailTemplate:
             type: object
             properties:
@@ -1656,7 +1677,6 @@ components:
                 - name
                 - subject
                 - body
-
         Integration:
             type: object
             properties:
@@ -1679,7 +1699,6 @@ components:
                 - service
                 - apiKey
                 - userId
-
         AI:
             type: object
             properties:
@@ -1704,7 +1723,6 @@ components:
                 - userId
                 - inputData
                 - responseData
-
         Invitation:
             type: object
             properties:
@@ -1723,7 +1741,6 @@ components:
             required:
                 - userId
                 - email
-
         validationError:
             type: object
             properties:
@@ -1739,7 +1756,6 @@ components:
                                 type: string
                             message:
                                 type: string
-
         Error:
             type: object
             properties:
