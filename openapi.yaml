@@ -11,7 +11,357 @@ info:
 servers:
   - url: https://example.com/api
 paths: {
-  
+  /auth/login:
+    post:
+      tags: 
+      - Authentication
+      summary: User Login
+      requestBody:
+        description: Logs in a user
+        content:
+          application/json:
+            schema:
+              required:
+                  - email
+                  - password
+              properties:
+                email:
+                  $ref: '#/components/schemas/User/properties/email'
+                password:
+                  $ref: '#/components/schemas/User/properties/password'
+        required: true
+      responses:
+        '200':
+          description: Successfully logged in
+          content:
+            application/json:
+              schema:
+                properties:
+                  user: 
+                   $ref: '#/components/schemas/UserResponse'
+                  accessToken:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '400':
+          description: Login Unsuccessful
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '422':
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validationError"
+  /auth/register:
+    post:
+      tags: 
+      - Authentication
+      summary: User Registeration
+      requestBody:
+        description: Registers a new user
+        content:
+          application/json:
+            schema:
+              required:
+                - name
+                - email
+                - password
+              properties:
+                name:
+                  $ref: '#/components/schemas/User/properties/name'
+                email:
+                  $ref: '#/components/schemas/User/properties/email'
+                password:
+                  $ref: '#/components/schemas/User/properties/password'
+        required: true
+      responses:
+        '200':
+          description: Successfull Registration
+          content:
+            application/json:
+              schema:
+               $ref: '#/components/schemas/UserResponse'      
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+        '422':
+          description: Validation exception
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/validationError"
+  /auth/request-password-reset:
+    post:
+      tags: 
+      - Authentication
+      summary: Request a password reset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "user@example.com"
+      responses:
+        '200':
+          description: Password reset link sent
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Password reset link has been sent to your email."
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /auth/reset-password:
+    post:
+      tags:
+      - Authentication
+      summary: Reset password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - token
+                - newPassword
+              properties:
+                token:
+                  type: string
+                  example: "reset_token"
+                newPassword:
+                  type: string
+                  minLength: 6
+                  example: "newPassword123"
+      responses:
+        '200':
+          description: Password reset successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Password has been reset successfully."
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validationError'
+  /auth/change-password:
+    post:
+      tags:
+      - Authentication
+      summary: Change password
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - currentPassword
+                - newPassword
+              properties:
+                currentPassword:
+                  type: string
+                  example: "currentPassword123"
+                newPassword:
+                  type: string
+                  minLength: 6
+                  example: "newPassword123"
+      responses:
+        '200':
+          description: Password change successful
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Password has been changed successfully."
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      status:
+                        example: 400
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/Error'
+                  - properties:
+                      status:
+                        example: 401
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/validationError'
+  /social-login/{provider}:
+    get:
+      tags:
+        - Authentication
+      summary: Initiate social login
+      parameters:
+        - in: path
+          name: provider
+          required: true
+          schema:
+            type: string
+          description: The social provider (e.g., google, facebook)
+      responses:
+        '302':
+          description: Redirect to social login provider
+  /social-login/{provider}/callback:
+    get:
+      tags:
+        - Authentication
+      summary: Callback for social login
+      parameters:
+        - in: path
+          name: provider
+          required: true
+          schema:
+            type: string
+          description: The social provider (e.g., google, facebook)
+        - in: query
+          name: code
+          required: true
+          schema:
+            type: string
+          description: Authorization code from social provider
+      responses:
+        '200':
+          description: Successfully authenticated via social login
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /magic-link-login:
+    post:
+      tags:
+        - Authentication
+      summary: Login via magic link
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "johndoe@example.com"
+      responses:
+        '200':
+          description: Magic link sent successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Magic link sent to your email"
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /magic-link-login/verify:
+    post:
+      tags:
+        - Authentication
+      summary: Verify magic link and log in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - magicLinkToken
+              properties:
+                email:
+                  type: string
+                  format: email
+                  example: "johndoe@example.com"
+                magicLinkToken:
+                  type: string
+                  example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      responses:
+        '200':
+          description: Successfully logged in via magic link
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    $ref: '#/components/schemas/User'
+                  accessToken:
+                    type: string
+                    example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 }
 
 
