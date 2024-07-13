@@ -833,6 +833,20 @@ paths:
             security:
                 - BearerAuth: []
             parameters:
+                - name: limit
+                  in: query
+                  description: Number of payments to return per page
+                  required: false
+                  schema:
+                      type: integer
+                      default: 10
+                - name: offset
+                  in: query
+                  description: Index of the first payment to return (0-indexed)
+                  required: false
+                  schema:
+                      type: integer
+                      default: 0
                 - name: userId
                   in: path
                   required: true
@@ -840,6 +854,7 @@ paths:
                       type: string
                       format: uuid
                       example: "123e4567-e89b-12d3-a456-426614174000"
+
             description: Get all notifications for a user
             operationId: getNotifications
             responses:
