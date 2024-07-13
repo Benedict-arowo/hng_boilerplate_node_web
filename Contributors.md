@@ -6,3 +6,4 @@ Thank you to all the contributors who have helped make this project possible!
 -   Micheal Peter Ekanem (@MYCON) - Backend Developer
 - Usman Ahmad (@usmahm) - Backend Developer
 -   Nweremizu Bruno (@Bruno) - Backend Developer
+- Nathaniel Nwabueze @NateEze - Backend Developer 
