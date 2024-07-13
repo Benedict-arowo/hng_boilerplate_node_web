@@ -65,6 +65,61 @@ paths:
                   message:
                     type: string
                     example: "Email already exists in the waitlist"
+    get:
+      tags:
+        - Waitlist
+      summary: "Retrieve waitlist entries paginated"
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+            example: 1
+          description: "Page number"
+        - in: query
+          name: limit
+          schema:
+            type: integer
+            example: 10
+          description: "Number of entries per page"
+      responses:
+        "200":
+          description: "Waitlist entries retrieved successfully"
+          content:
+            application/json:
+              schema:
+                properties:
+                  message:
+                    type: string
+                    example: "Waitlist entries retrieved successfully"
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        email:
+                          type: string
+                          format: email
+                        created_at:
+                          type: string
+                          format: date-time
+                  pagination:
+                    type: object
+                    properties:
+                      current_page:
+                        type: integer
+                      total_pages:
+                        type: integer
+                      total_entries:
+                        type: integer
+        "500":
+          description: "Internal server error"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
 
 components:
   schemas:
