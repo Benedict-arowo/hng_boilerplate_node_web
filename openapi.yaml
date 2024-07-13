@@ -848,15 +848,26 @@ paths:
                     description: A list of blog posts
                     content:
                         application/json:
-                            schema:
+                          schema:
+                            properties:
+                              status:
+                                type: boolean
+                                example: true
+                              message:
+                                type: string
+                                example: "Successfully retrevied blogs"
+                              data:
                                 type: object
                                 properties:
-                                    totalItems:
-                                        type: integer
-                                    totalPages:
-                                        type: integer
-                                    currentPage:
-                                        type: integer
+                                    pagination:
+                                      type: object
+                                      properties:
+                                        totalItems:
+                                          type: integer
+                                        totalPages:
+                                          type: integer
+                                        currentPage:
+                                          type: integer
                                     blogs:
                                         type: array
                                         items:
@@ -865,6 +876,8 @@ paths:
             tags:
                 - Blog Posts
             summary: Create a new blog post
+            security:
+                - BearerAuth: []
             requestBody:
                 required: true
                 content:
@@ -876,8 +889,22 @@ paths:
                     description: Blog post created successfully
                     content:
                         application/json:
-                            schema:
+                          schema:
+                            properties:
+                              status:
+                                type: boolean
+                                example: true
+                              message:
+                                type: string
+                                example: "Successfully created blog"
+                              data:
                                 $ref: '#/components/schemas/BlogPosts'
+                "400":
+                    description: Invalid input
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
     /blogs/{id}:
         get:
             summary: Get a single blog post by ID
@@ -894,15 +921,29 @@ paths:
                     description: A single blog post
                     content:
                         application/json:
-                            schema:
+                          schema:
+                            properties:
+                              status:
+                                type: boolean
+                                example: true
+                              message:
+                                type: string
+                                example: "Success"
+                              data:
                                 $ref: '#/components/schemas/BlogPosts'
                 '404':
-                    description: Blog post not found
+                    description: Post not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
 
-        put:
+        patch:
             tags:
                 - Blog Posts
             summary: Update a blog post by ID
+            security:
+                - BearerAuth: []
             parameters:
                 - name: id
                   in: path
@@ -920,14 +961,34 @@ paths:
                     description: Blog post updated successfully
                     content:
                         application/json:
-                            schema:
+                          schema:
+                            properties:
+                              status:
+                                type: boolean
+                                example: true
+                              message:
+                                type: string
+                                example: "Success"
+                              data:
                                 $ref: '#/components/schemas/BlogPosts'
+                "400":
+                    description: Invalid input
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
                 '404':
-                    description: Blog post not found
+                    description: Post not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
         delete:
             tags:
                 - Blog Posts
             summary: Delete a blog post by ID
+            security:
+                - BearerAuth: []
             parameters:
                 - name: id
                   in: path
@@ -938,7 +999,11 @@ paths:
                 '204':
                     description: Blog post deleted successfully
                 '404':
-                    description: Blog post not found
+                    description: Post not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
 
 components:
     securitySchemes:
