@@ -17,7 +17,7 @@
 |    |--- utils
 |    |--- server.ts
 |--- .env
-|--- app.ts
+|--- index.js
 |--- .gitignore
 |--- package.json
 |--- tsconfig.json
@@ -224,7 +224,7 @@ Here's an overview of the project's folder structure:
 |    |--- utils
 |    |--- server.ts
 |--- .env
-|--- app.ts
+|--- index.js
 |--- .gitignore
 |--- package.json
 |--- tsconfig.json
@@ -234,11 +234,8 @@ Here's an overview of the project's folder structure:
 
 Here are some useful npm scripts that you can use during development and production:
 
--   `npm run build`: Compiles the TypeScript code to JavaScript.
--   `npm run start:dev`: Starts the development server with live reloading.
--   `npm run start`: Starts the production server.
--   `npm run test`: Runs the test suite (if available).
--   `npm run lint`: Runs the linter to check for code style issues.
+-   `npm install`: Installs all the required packages.
+-   `node index.js`: Starts the server.
 
 ## Additional Resources
 
