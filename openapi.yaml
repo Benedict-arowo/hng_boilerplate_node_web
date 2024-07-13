@@ -825,6 +825,62 @@ paths:
                             schema:
                                 $ref: "#/components/schemas/Error"
 
+    /notifications/{userId}:
+        get:
+            tags:
+                - Notifications
+            summary: Get all notifications
+            security:
+                - BearerAuth: []
+            parameters:
+                - name: userId
+                  in: path
+                  required: true
+                  schema:
+                      type: string
+                      format: uuid
+                      example: "123e4567-e89b-12d3-a456-426614174000"
+            description: Get all notifications for a user
+            operationId: getNotifications
+            responses:
+                "200":
+                    description: A list of notifications
+                    content:
+                        application/json:
+                            schema:
+                                type: array
+                                items:
+                                    properties:
+                                        status:
+                                            type: string
+                                            example: "success"
+                                        message:
+                                            type: string
+                                            example: "Notifications retrieved successfully"
+                                        data:
+                                            type: array
+                                            items:
+                                            $ref: "#/components/schemas/Notifications"
+
+                "401":
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                "404":
+                    description: No notifications found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                "500":
+                    description: Internal Server Error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+
 components:
     securitySchemes:
         BearerAuth:
