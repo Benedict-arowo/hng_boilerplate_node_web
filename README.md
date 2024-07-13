@@ -169,43 +169,17 @@ Navigate to the project directory and install the required dependencies.
 npm install
 ```
 
-### 3. Configure Environment Variables
+### 6. Run the Server
 
-Create a `.env` file in the root directory of the project and add your environment-specific variables. You can use the provided `.env.example` file as a reference.
-
-```sh
-cp .env.example .env
-```
-
-Edit the `.env` file to match your environment configuration.
-
-### 4. Compile TypeScript
-
-Compile the TypeScript code to JavaScript.
+To run the application, use the following command:
 
 ```sh
-npm run build
-```
-
-### 5. Run the Development Server
-
-Start the development server with the following command. This will also watch for any changes in your code and automatically restart the server.
-
-```sh
-npm run start:dev
-```
-
-### 6. Run the Production Server
-
-To run the application in a production environment, use the following command:
-
-```sh
-npm run start
+node index.js
 ```
 
 ### 7. Verify the Setup
 
-Open your browser and navigate to `http://localhost:3000/api/v1/` to verify that the application is running correctly.
+Open your browser and navigate to `http://localhost:3000/` to verify that the application is running correctly.
 
 ## Folder Structure
 
