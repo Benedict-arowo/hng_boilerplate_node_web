@@ -693,6 +693,51 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
+    /users/data-export:
+      get:
+        tags:
+          - Users
+        summary: "Export data"
+        description: >
+          Exports data in CSV format. This route is protected and requires authentication.
+          Specify the `startDate` and `endDate`  as query parameters to export data within a specific date range.
+        security:
+          - BearerAuth: []
+        parameters:
+          - in: query
+            name: startDate
+            required: true
+            schema:
+              type: string
+              format: date
+            description: "Start date (YYYY-MM-DD) for exporting data within a specific range"
+          - in: query
+            name: endDate
+            required: true
+            schema:
+              type: string
+              format: date
+            description: "End date (YYYY-MM-DD) for exporting data within a specific range"
+        responses:
+          "200":
+            description: "Data export successful"
+            content:
+              text/csv:
+                schema:
+                  type: string
+                  example: "attachment; filename=\"export.csv\""
+          "401":
+            description: "Unauthorized"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
+          "500":
+            description: "Internal server error"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Error"
 
     /organisations:
         get:
@@ -1977,6 +2022,19 @@ components:
                 - userId
                 - email
 
+        ExportData:
+            type: object
+            properties:
+              startDate:
+                type: string
+                format: date
+              endDate:
+                type: string
+                format: date
+            required:
+              - startDate
+              - endDate
+              
         validationError:
             type: object
             properties:
@@ -1992,7 +2050,7 @@ components:
                                 type: string
                             message:
                                 type: string
-
+                                
         Error:
             type: object
             properties:
