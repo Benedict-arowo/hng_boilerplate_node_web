@@ -21,23 +21,24 @@
 |--- .gitignore
 |--- package.json
 |--- tsconfig.json
+|--- openapi.yaml
 ```
 
 ## Dependencies (Dev)
 
-- Node.js
-- TypeScript
-- Express
-- ts-node-dev
-- [Other dependencies]
+-   Node.js
+-   TypeScript
+-   Express
+-   ts-node-dev
+-   [Other dependencies]
 
 ## Getting Started
 
 Before you begin, ensure you have the following installed on your machine:
 
-- [Node.js](https://nodejs.org/) (v14 or later)
-- [npm](https://www.npmjs.com/) (Node Package Manager, included with Node.js)
-- [Git](https://git-scm.com/)
+-   [Node.js](https://nodejs.org/) (v14 or later)
+-   [npm](https://www.npmjs.com/) (Node Package Manager, included with Node.js)
+-   [Git](https://git-scm.com/)
 
 ## Contribution Guide
 
@@ -129,11 +130,11 @@ replacing `your-branch-name` with the name of the branch you created earlier.
 <details>
 <summary> <strong>If you get any errors while pushing, click here:</strong> </summary>
 
-- ### Authentication Error
-     <pre>remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.
-  remote: Please see https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/ for more information.
-  fatal: Authentication failed for 'https://github.com/<your-username>/first-contributions.git/'</pre>
-  Go to [GitHub's tutorial](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) on generating and configuring an SSH key to your account.
+-   ### Authentication Error
+       <pre>remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.
+    remote: Please see https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/ for more information.
+    fatal: Authentication failed for 'https://github.com/<your-username>/first-contributions.git/'</pre>
+    Go to [GitHub's tutorial](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account) on generating and configuring an SSH key to your account.
 
 </details>
 
@@ -233,17 +234,17 @@ Here's an overview of the project's folder structure:
 
 Here are some useful npm scripts that you can use during development and production:
 
-- `npm run build`: Compiles the TypeScript code to JavaScript.
-- `npm run start:dev`: Starts the development server with live reloading.
-- `npm run start`: Starts the production server.
-- `npm run test`: Runs the test suite (if available).
-- `npm run lint`: Runs the linter to check for code style issues.
+-   `npm run build`: Compiles the TypeScript code to JavaScript.
+-   `npm run start:dev`: Starts the development server with live reloading.
+-   `npm run start`: Starts the production server.
+-   `npm run test`: Runs the test suite (if available).
+-   `npm run lint`: Runs the linter to check for code style issues.
 
 ## Additional Resources
 
-- [Node.js Documentation](https://nodejs.org/en/docs/)
-- [TypeScript Documentation](https://www.typescriptlang.org/docs/)
-- [Express Documentation](https://expressjs.com/)
+-   [Node.js Documentation](https://nodejs.org/en/docs/)
+-   [TypeScript Documentation](https://www.typescriptlang.org/docs/)
+-   [Express Documentation](https://expressjs.com/)
 
 By following these steps, you should have your Node.js and TypeScript application up and running. If you encounter any issues, please refer to the documentation of the respective tools or seek help from the community.
 
