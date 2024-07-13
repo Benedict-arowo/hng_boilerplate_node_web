@@ -374,289 +374,287 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
-    
+
     /users:
-      get:
-        tags:
-          - Users
-        summary: Get list of all users
-        parameters:
-          - in: query
-            name: page
-            schema:
-              description: Page to fetch for pagination
-              type: integer
-              minimum: 1
-              default: 1
-          - in: query
-            name: limit
-            schema:
-              description: Number of users per page
-              type: integer
-              minimum: 1
-              maximum: 50
-              default: 10
-        responses:
-          "200":
-            description: Successfully fetched list of users
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    status:
-                      type: boolean
-                      enum: [true]
-                    message:
-                      type: string
-                      example: "Users fetched successfully"
-                    data:
-                      type: object
-                      properties:
-                        users:
-                          type: array
-                          items:
-                            $ref: "#/components/schemas/UserResponse"
-                        totalCount:
-                          type: integer
-                          example: 20
-          "401":
-            description: Unauthorized
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Error"
-      patch:
-        tags:
-          - Users
-        summary: Update User details
-        security:
+        get:
+            tags:
+                - Users
+            summary: Get list of all users
+            parameters:
+                - in: query
+                  name: page
+                  schema:
+                      description: Page to fetch for pagination
+                      type: integer
+                      minimum: 1
+                      default: 1
+                - in: query
+                  name: limit
+                  schema:
+                      description: Number of users per page
+                      type: integer
+                      minimum: 1
+                      maximum: 50
+                      default: 10
+            responses:
+                "200":
+                    description: Successfully fetched list of users
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: boolean
+                                        enum: [true]
+                                    message:
+                                        type: string
+                                        example: "Users fetched successfully"
+                                    data:
+                                        type: object
+                                        properties:
+                                            users:
+                                                type: array
+                                                items:
+                                                    $ref: "#/components/schemas/UserResponse"
+                                            totalCount:
+                                                type: integer
+                                                example: 20
+                "401":
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+        patch:
+            tags:
+                - Users
+            summary: Update User details
+            security:
                 - BearerAuth: []
-        requestBody:
-          content:
-            application/json:
-              schema:
-                properties:
-                  name: 
-                    $ref: "#/components/schemas/User/properties/name"
-                  email: 
-                    $ref: "#/components/schemas/User/properties/name"
-          required: true
-        responses:
-          "200":
-            description: User details updated successfully
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    status:
-                      type: boolean
-                      enum: [true]
-                    message:
-                      type: string
-                      example: "User fetched successfully"
-                    data:
-                      $ref: "#/components/schemas/UserResponse"
-          "400":
-            description: Invalid request body
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Error"
-          "401":
-            description: Unauthorized
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Error"
-          "422":
-            description: Validation error
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/validationError"
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            properties:
+                                name:
+                                    $ref: "#/components/schemas/User/properties/name"
+                                email:
+                                    $ref: "#/components/schemas/User/properties/name"
+                required: true
+            responses:
+                "200":
+                    description: User details updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: boolean
+                                        enum: [true]
+                                    message:
+                                        type: string
+                                        example: "User fetched successfully"
+                                    data:
+                                        $ref: "#/components/schemas/UserResponse"
+                "400":
+                    description: Invalid request body
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                "401":
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                "422":
+                    description: Validation error
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/validationError"
     /users/{userId}:
-      get:
-        tags:
-          - Users
-        summary: Gets a user by id
-        parameters:
-          - in: path
-            description: Id of user to get
-            name: userId
-            required: true
-            schema:
-              type: string
-        responses:
-          "200":
-            description: User fetched successfully
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    status:
-                      type: boolean
-                      enum: [true]
-                    message:
+        get:
+            tags:
+                - Users
+            summary: Gets a user by id
+            parameters:
+                - in: path
+                  description: Id of user to get
+                  name: userId
+                  required: true
+                  schema:
                       type: string
-                      example: "User fetched successfully"
-                    data:
-                      $ref: "#/components/schemas/UserResponse"
+            responses:
+                "200":
+                    description: User fetched successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: boolean
+                                        enum: [true]
+                                    message:
+                                        type: string
+                                        example: "User fetched successfully"
+                                    data:
+                                        $ref: "#/components/schemas/UserResponse"
 
-      delete:
-        tags:
-          - Users
-        summary: Delete a user by id
-        security:
+        delete:
+            tags:
+                - Users
+            summary: Delete a user by id
+            security:
                 - BearerAuth: []
-        parameters:
-          - in: path
-            description: Id of user to delete
-            name: userId
-            required: true
-            schema:
-              type: string
-        responses:
-          "200":
-            description: User deletion successfully
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    status:
-                      type: boolean
-                      enum: [true]
-                    message:
+            parameters:
+                - in: path
+                  description: Id of user to delete
+                  name: userId
+                  required: true
+                  schema:
                       type: string
-                      example: "User deleted successfully"
-                    data:
-                      $ref: "#/components/schemas/UserResponse"
-          "401":
-            description: Unauthorized
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Error"
-          "404":
-            description: User not found
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Error"
-                  
+            responses:
+                "200":
+                    description: User deletion successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: boolean
+                                        enum: [true]
+                                    message:
+                                        type: string
+                                        example: "User deleted successfully"
+                                    data:
+                                        $ref: "#/components/schemas/UserResponse"
+                "401":
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+                "404":
+                    description: User not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
+
     /users/organisations:
-      get:
-        tags:
-          - Users
-        summary: Get list of organisations by current user
-        security:
+        get:
+            tags:
+                - Users
+            summary: Get list of organisations by current user
+            security:
                 - BearerAuth: []
-        parameters:
-          - in: query
-            name: page
-            schema:
-              description: Page to fetch for pagination
-              type: integer
-              minimum: 1
-              default: 1
-          - in: query
-            name: limit
-            schema:
-              description: Number of users per page
-              type: integer
-              minimum: 1
-              maximum: 50
-              default: 10
-        responses:
-          "200":
-            description: A list of organisations created by current user
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    status:
-                      type: boolean
-                      enum: [true]
-                    message:
-                      type: string
-                      example: "User organisations fetched successfully"
-                    data:
-                      type: object
-                      properties:
-                        totalCount:
-                          type: integer
-                          example: 20
-                        organisations:
-                          type: array
-                          items:
-                            $ref: "#/components/schemas/Organisations"
+            parameters:
+                - in: query
+                  name: page
+                  schema:
+                      description: Page to fetch for pagination
+                      type: integer
+                      minimum: 1
+                      default: 1
+                - in: query
+                  name: limit
+                  schema:
+                      description: Number of users per page
+                      type: integer
+                      minimum: 1
+                      maximum: 50
+                      default: 10
+            responses:
+                "200":
+                    description: A list of organisations created by current user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: boolean
+                                        enum: [true]
+                                    message:
+                                        type: string
+                                        example: "User organisations fetched successfully"
+                                    data:
+                                        type: object
+                                        properties:
+                                            totalCount:
+                                                type: integer
+                                                example: 20
+                                            organisations:
+                                                type: array
+                                                items:
+                                                    $ref: "#/components/schemas/Organisations"
 
-          "401":
-            description: Unauthorized
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Error"
+                "401":
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
     /users/blogposts:
-      get:
-        tags:
-          - Users
-        summary: Get list of blog posts by current user
-        security:
+        get:
+            tags:
+                - Users
+            summary: Get list of blog posts by current user
+            security:
                 - BearerAuth: []
-        parameters:
-          - in: query
-            name: page
-            schema:
-              description: Page to fetch for pagination
-              type: integer
-              minimum: 1
-              default: 1
-          - in: query
-            name: limit
-            schema:
-              description: Number of users per page
-              type: integer
-              minimum: 1
-              maximum: 50
-              default: 10
-        responses:
-          "200":
-            description: A list of blog posts created by current user
-            content:
-              application/json:
-                schema:
-                  type: object
-                  properties:
-                    status:
-                      type: boolean
-                      enum: [true]
-                    message:
-                      type: string
-                      example: "User blog posts fetched successfully"
-                    data:
-                      type: object
-                      properties:
-                        totalCount:
-                          type: integer
-                          example: 20
-                        blogposts:
-                          type: array
-                          items:
-                            $ref: "#/components/schemas/BlogPosts"
+            parameters:
+                - in: query
+                  name: page
+                  schema:
+                      description: Page to fetch for pagination
+                      type: integer
+                      minimum: 1
+                      default: 1
+                - in: query
+                  name: limit
+                  schema:
+                      description: Number of users per page
+                      type: integer
+                      minimum: 1
+                      maximum: 50
+                      default: 10
+            responses:
+                "200":
+                    description: A list of blog posts created by current user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    status:
+                                        type: boolean
+                                        enum: [true]
+                                    message:
+                                        type: string
+                                        example: "User blog posts fetched successfully"
+                                    data:
+                                        type: object
+                                        properties:
+                                            totalCount:
+                                                type: integer
+                                                example: 20
+                                            blogposts:
+                                                type: array
+                                                items:
+                                                    $ref: "#/components/schemas/BlogPosts"
 
-
-          "401":
-            description: Unauthorized
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/schemas/Error"
-
+                "401":
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: "#/components/schemas/Error"
 
     /organisations:
         get:
@@ -1575,8 +1573,8 @@ components:
             type: object
             properties:
                 status:
-                  type: boolean
-                  enum: [false]
+                    type: boolean
+                    enum: [false]
                 errors:
                     type: array
                     items:
@@ -1591,7 +1589,7 @@ components:
             type: object
             properties:
                 status:
-                  type: boolean
-                  enum: [false]
+                    type: boolean
+                    enum: [false]
                 message:
                     type: string
