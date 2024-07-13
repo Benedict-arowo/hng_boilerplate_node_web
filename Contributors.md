@@ -2,4 +2,5 @@
 
 Thank you to all the contributors who have helped make this project possible!
 
--   Benedict Arowojolu-Alagwe (@benedict.arowo) - Backend Developer
+- Benedict Arowojolu-Alagwe (@benedict.arowo) - Backend Developer
+- Usman Ahmad (@usmahm) - Backend Developer
