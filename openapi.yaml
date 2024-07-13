@@ -25,6 +25,12 @@ tags:
       description: Routes related to Organisation
     - name: Payments
       description: Routes related to Payments
+    - name: Waitlist
+      description: Routes related to Waitlist
+    - name: Blogs
+      description: Routes related to Blogs
+    - name: Notifications
+      description: Routes related to Notifications
 paths:
     /auth/login:
         post:
@@ -1311,6 +1317,8 @@ paths:
             tags:
                 - Waitlist
             summary: "Retrieve waitlist entries paginated"
+            security:
+                - BearerAuth: []
             parameters:
                 - in: query
                   name: page
@@ -1370,6 +1378,8 @@ paths:
             tags:
                 - Waitlist
             summary: "Delete a waitlist entry"
+            security:
+                - BearerAuth: []
             parameters:
                 - in: path
                   name: id
