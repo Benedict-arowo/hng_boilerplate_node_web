@@ -227,13 +227,21 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                                allOf:
+                                    - $ref: "#/components/schemas/Error"
+                                    - properties:
+                                          status:
+                                              example: 400
                 "401":
                     description: Unauthorized
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                                allOf:
+                                    - $ref: "#/components/schemas/Error"
+                                    - properties:
+                                          status:
+                                              example: 401
                 "422":
                     description: Validation Error
                     content:
@@ -901,7 +909,11 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                                allOf:
+                                    - $ref: "#/components/schemas/Error"
+                                    - properties:
+                                          status:
+                                              example: 403
     /payments/{id}:
         get:
             tags:
@@ -933,19 +945,31 @@ paths:
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                                allOf:
+                                    - $ref: "#/components/schemas/Error"
+                                    - properties:
+                                          status:
+                                              example: 401
                 "403":
                     description: Forbidden - Access denied
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                                allOf:
+                                    - $ref: "#/components/schemas/Error"
+                                    - properties:
+                                          status:
+                                              example: 403
                 "404":
                     description: Payment not found
                     content:
                         application/json:
                             schema:
-                                $ref: "#/components/schemas/Error"
+                                allOf:
+                                    - $ref: "#/components/schemas/Error"
+                                    - properties:
+                                          status:
+                                              example: 404
     /payments/stripe:
         post:
             tags:
@@ -1090,140 +1114,7 @@ paths:
                         application/json:
                             schema:
                                 $ref: "#/components/schemas/Error"
-    "/waitlist":
-        post:
-            tags:
-                - Waitlist
-            summary: "Create a new waitlist entry"
-            requestBody:
-                description: "Adds an email to the waitlist"
-                content:
-                    application/json:
-                        schema:
-                            required:
-                                - email
-                            properties:
-                                email:
-                                    type: string
-                                    format: email
-                                    example: "winalong@teamnatureswag.com"
-                required: true
-            responses:
-                "201":
-                    description: "Waitlist entry added successfully"
-                    content:
-                        application/json:
-                            schema:
-                                properties:
-                                    message:
-                                        type: string
-                                        example: "Waitlist entry added successfully"
-                                    data:
-                                        type: object
-                                        properties:
-                                            id:
-                                                type: integer
-                                            email:
-                                                type: string
-                                                format: email
-                                            created_at:
-                                                type: string
-                                                format: date-time
-                "400":
-                    description: "Invalid request data"
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/Error"
-                "409":
-                    description: "Email already exists in the waitlist"
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/Error"
-        get:
-            tags:
-                - Waitlist
-            summary: "Retrieve waitlist entries paginated"
-            parameters:
-                - in: query
-                  name: page
-                  schema:
-                      type: integer
-                      example: 1
-                  description: "Page number"
-                - in: query
-                  name: limit
-                  schema:
-                      type: integer
-                      example: 10
-                  description: "Number of entries per page"
-            responses:
-                "200":
-                    description: "Waitlist entries retrieved successfully"
-                    content:
-                        application/json:
-                            schema:
-                                properties:
-                                    message:
-                                        type: string
-                                        example: "Waitlist entries retrieved successfully"
-                                    data:
-                                        type: array
-                                        items:
-                                            type: object
-                                            properties:
-                                                id:
-                                                    type: integer
-                                                email:
-                                                    type: string
-                                                    format: email
-                                                created_at:
-                                                    type: string
-                                                    format: date-time
-                                    pagination:
-                                        type: object
-                                        properties:
-                                            current_page:
-                                                type: integer
-                                            total_pages:
-                                                type: integer
-                                            total_entries:
-                                                type: integer
-                "500":
-                    description: "Internal server error"
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/Error"
-    "/waitlist/{id}":
-        delete:
-            tags:
-                - Waitlist
-            summary: "Delete a waitlist entry"
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: integer
-                  description: "ID of the waitlist entry"
-            responses:
-                "200":
-                    description: "Waitlist entry deleted successfully"
-                    content:
-                        application/json:
-                            schema:
-                                properties:
-                                    message:
-                                        type: string
-                                        example: "Waitlist entry deleted successfully"
-                "404":
-                    description: "Waitlist entry not found"
-                    content:
-                        application/json:
-                            schema:
-                                $ref: "#/components/schemas/Error"
+
 components:
     securitySchemes:
         BearerAuth:
